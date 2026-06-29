@@ -1,0 +1,9 @@
+# .vercelignore — n'uploade QUE les fichiers du site.
+# On ignore tout, puis on re-inclut explicitement les fichiers voulus.
+*
+
+!index.html
+!mentions-legales.html
+!politique-confidentialite.html
+!uploads/
+!uploads/logo-1781938115039.png
