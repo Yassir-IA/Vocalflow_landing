@@ -466,6 +466,12 @@
         });
       })
       .then(function(res){
+        // cas silencieux (démo gratuite déjà utilisée) : la page ne montre rien
+        if(res.data && res.data.silent){
+          clearErr();
+          if(btn){ btn.innerHTML = btnLabel; syncBtn(); }
+          return;
+        }
         if(res.httpOk && res.data && res.data.ok){
           // appel bien déclenché → on affiche l'état « Appel en cours… »
           numEl.textContent = (country.value || '+33') + ' ' + phone.value;
@@ -552,11 +558,80 @@
     }
   }
 
+  /* ---------- Animations d'entrée + révélation au scroll (port du componentDidMount du design) ---------- */
+  function setupReveal(){
+    var EASE = 'cubic-bezier(.16,.84,.44,1)';
+
+    // Force un élément à son état visible final (annule une éventuelle animation gelée puis nettoie les styles inline)
+    function show(el){
+      try { el.getAnimations().forEach(function(a){ a.cancel(); }); } catch(e){}
+      el.style.opacity = '';
+      el.style.transform = '';
+    }
+
+    // Apparition caché → visible en ENHANCEMENT. Un timeout par élément garantit
+    // l'état visible final même si l'horloge d'animation est gelée.
+    function playIn(el, delay){
+      delay = delay || 0;
+      el.style.opacity = '0';
+      try {
+        var anim = el.animate(
+          [{ opacity:0, transform:'translateY(32px)' }, { opacity:1, transform:'translateY(0)' }],
+          { duration:720, delay:delay, easing:EASE, fill:'backwards' }
+        );
+        anim.onfinish = function(){ show(el); };
+      } catch(e){ show(el); }
+      setTimeout(function(){ show(el); }, delay + 880);
+    }
+
+    // Héro : entrée en cascade au chargement
+    var hero = document.querySelector('header');
+    if(hero){
+      Array.prototype.slice.call(hero.children).forEach(function(c, i){ playIn(c, 130 + i * 120); });
+    }
+
+    // Cibles révélées au scroll (blocs de section + cartes de grille en cascade)
+    var targets = [];
+    Array.prototype.slice.call(document.querySelectorAll('section')).forEach(function(sec){
+      Array.prototype.slice.call(sec.children).forEach(function(child){
+        var st = child.getAttribute('style') || '';
+        var cls = (child.className || '') + '';
+        var isGrid = st.indexOf('grid-template-columns') !== -1 || /(stats|pain|steps)-grid/.test(cls);
+        if(isGrid){
+          Array.prototype.slice.call(child.children).forEach(function(card, i){ card.__d = i * 110; targets.push(card); });
+        } else { child.__d = 0; targets.push(child); }
+      });
+    });
+
+    function reveal(el){ if(el.__shown) return; el.__shown = true; playIn(el, el.__d || 0); }
+    function inView(el){ var r = el.getBoundingClientRect(); return r.top < window.innerHeight * 0.9 && r.bottom > 0; }
+
+    targets.forEach(function(el){ el.style.opacity = '0'; });
+
+    // Révèle ce qui est déjà visible, puis à chaque scroll/resize (idempotent)
+    function sweep(){
+      var pending = false;
+      targets.forEach(function(el){ if(!el.__shown){ if(inView(el)) reveal(el); else pending = true; } });
+      if(!pending){ window.removeEventListener('scroll', sweep); window.removeEventListener('resize', sweep); }
+    }
+    requestAnimationFrame(sweep);
+    window.addEventListener('scroll', sweep, { passive:true });
+    window.addEventListener('resize', sweep, { passive:true });
+
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(ents){
+        ents.forEach(function(e){ if(e.isIntersecting){ reveal(e.target); io.unobserve(e.target); } });
+      }, { threshold:0.12, rootMargin:'0px 0px -6% 0px' });
+      requestAnimationFrame(function(){ targets.forEach(function(t){ if(!t.__shown) io.observe(t); }); });
+    }
+  }
+
   function init(){
     buildWave();
     setupForm('hero');
     setupForm('final');
     setupFaq();
+    setupReveal();
   }
 
   if(document.readyState === 'loading'){
