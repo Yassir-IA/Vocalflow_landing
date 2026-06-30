@@ -20,8 +20,8 @@
 
 <style>
   *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{margin:0;background:#050a18}
+  html{scroll-behavior:smooth;overflow-anchor:none}
+  body{margin:0;background:#050a18;overflow-anchor:none}
   input::placeholder{color:#5d6b8a}
   ::selection{background:rgba(31,209,249,0.3)}
 
@@ -627,6 +627,9 @@
   }
 
   function init(){
+    // Toujours démarrer en haut de page (désactive la restauration du scroll du navigateur au refresh)
+    try { if('scrollRestoration' in history){ history.scrollRestoration = 'manual'; } } catch(e){}
+    window.scrollTo(0, 0);
     buildWave();
     setupForm('hero');
     setupForm('final');
