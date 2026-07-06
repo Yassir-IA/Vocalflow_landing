@@ -45,6 +45,8 @@
   @keyframes vfbar{0%,100%{transform:scaleY(.28)}50%{transform:scaleY(1)}}
   @keyframes vfping{0%{transform:scale(.55);opacity:.7}100%{transform:scale(2.3);opacity:0}}
   @keyframes vfshine{0%{left:-70%}45%{left:135%}100%{left:135%}}
+  nav{-webkit-backdrop-filter:blur(14px)}
+  .vf-overlay{-webkit-backdrop-filter:blur(10px)}
 
   /* interactive polish */
   a, button{ transition:transform .15s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease, color .15s ease, opacity .2s ease; }
@@ -82,8 +84,15 @@
     .vf-statcell{ border-left:none !important; }
     .vf-statcell + .vf-statcell{ border-top:1px solid rgba(255,255,255,0.07) !important; }
   }
-  @media (max-width:560px){
-    .vf-nav{ padding:14px 18px !important; }
+  @media (max-width:640px){
+    nav{ padding:13px 18px !important; }
+    footer{ padding:32px 20px !important; }
+    section{ padding-left:20px !important; padding-right:20px !important; }
+    .vf-hero{ padding:60px 20px 32px !important; }
+    .vf-hero h1{ font-size:clamp(33px,10vw,46px) !important; letter-spacing:-1.3px !important; }
+    .vf-h1-br{ display:none; }
+    .vf-badge{ font-size:10.5px !important; letter-spacing:2px !important; gap:7px !important; }
+    .vf-modal-card{ padding:26px 20px !important; }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -114,12 +123,12 @@
 
   <!-- HERO -->
   <header class="vf-hero" style="max-width:1000px; margin:0 auto; padding:clamp(96px,11vh,136px) 28px 56px; text-align:center;">
-    <div style="display:inline-flex; align-items:center; gap:9px; white-space:nowrap; font-family:'Space Mono',monospace; font-size:11.5px; letter-spacing:3px; text-transform:uppercase; color:#1fd1f9; border:1px solid rgba(31,209,249,0.3); border-radius:100px; padding:7px 15px; margin-bottom:38px; background:rgba(31,209,249,0.04); box-shadow:0 0 30px rgba(31,209,249,0.12) inset;">
+    <div class="vf-badge" style="display:inline-flex; align-items:center; gap:9px; white-space:nowrap; font-family:'Space Mono',monospace; font-size:11.5px; letter-spacing:3px; text-transform:uppercase; color:#1fd1f9; border:1px solid rgba(31,209,249,0.3); border-radius:100px; padding:7px 15px; margin-bottom:38px; background:rgba(31,209,249,0.04); box-shadow:0 0 30px rgba(31,209,249,0.12) inset;">
       <span style="width:7px; height:7px; border-radius:50%; background:#1fd1f9; box-shadow:0 0 10px #1fd1f9;"></span>
       N°1 de l'IA vocale en France
     </div>
     <h1 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:clamp(42px,6.8vw,84px); line-height:1.05; letter-spacing:-2.5px; margin:0 0 30px;">
-      Ne manquez plus jamais<br><span style="font-family:'Unbounded',sans-serif; font-weight:600; font-size:0.82em; letter-spacing:-1px; background:linear-gradient(120deg,#6cefff,#1fd1f9 45%,#7c5cff); -webkit-background-clip:text; background-clip:text; color:transparent;">un seul appel.</span>
+      Ne manquez plus jamais<br class="vf-h1-br"> <span style="font-family:'Unbounded',sans-serif; font-weight:600; font-size:0.82em; letter-spacing:-1px; background:linear-gradient(120deg,#6cefff,#1fd1f9 45%,#7c5cff); -webkit-background-clip:text; background-clip:text; color:transparent;">un seul appel.</span>
     </h1>
     <p style="max-width:560px; margin:0 auto 36px; font-size:clamp(17px,2.1vw,20px); line-height:1.6; font-weight:400; color:#b3c3e2;">
       VocalFlow décroche en une seconde, jour et nuit, <span style="display:inline-block;">et vos clients ne devineront jamais qu'ils parlent à une IA.</span>
@@ -522,8 +531,8 @@
   </footer>
 
   <!-- MODALE TEST IA (ouvre directement sur le numéro à appeler) -->
-  <div id="test-modal" style="display:none; position:fixed; inset:0; z-index:100; background:rgba(3,6,15,0.72); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); align-items:center; justify-content:center; padding:20px;">
-    <div id="test-modal-card" role="dialog" aria-modal="true" aria-label="Tester l'agent en direct" style="position:relative; width:100%; max-width:460px; max-height:calc(100vh - 40px); overflow-y:auto; background:linear-gradient(160deg, rgba(31,209,249,0.08), rgba(124,92,255,0.06)), #0a1226; border:1px solid rgba(31,209,249,0.35); border-radius:22px; padding:32px 30px; box-shadow:0 30px 90px rgba(0,0,0,0.55), 0 0 60px rgba(31,209,249,0.12);">
+  <div id="test-modal" class="vf-overlay" style="display:none; position:fixed; inset:0; z-index:100; background:rgba(3,6,15,0.72); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); align-items:center; justify-content:center; padding:20px;">
+    <div id="test-modal-card" class="vf-modal-card" role="dialog" aria-modal="true" aria-label="Tester l'agent en direct" style="position:relative; width:100%; max-width:460px; max-height:calc(100vh - 40px); overflow-y:auto; background:linear-gradient(160deg, rgba(31,209,249,0.08), rgba(124,92,255,0.06)), #0a1226; border:1px solid rgba(31,209,249,0.35); border-radius:22px; padding:32px 30px; box-shadow:0 30px 90px rgba(0,0,0,0.55), 0 0 60px rgba(31,209,249,0.12);">
       <div aria-hidden="true" style="position:absolute; top:0; left:12%; right:12%; height:1px; background:linear-gradient(90deg, transparent, rgba(31,209,249,0.6), transparent);"></div>
       <button type="button" class="vf-close vf-modal-close" aria-label="Fermer" style="position:absolute; top:14px; right:14px; width:34px; height:34px; border-radius:10px; border:1px solid rgba(255,255,255,0.14); background:transparent; color:#9fb0cf; font-size:15px; cursor:pointer; line-height:1;">✕</button>
 
@@ -557,13 +566,20 @@
     var refl = document.getElementById('vf-wave-refl');
     if(!wave) return;
     var animated = true; // animation toujours active, comme dans Claude Design
-    var N = 52;
+    var mobile = !!(window.matchMedia && window.matchMedia('(max-width:640px)').matches);
+    var N = mobile ? 34 : 52;
+    // on vide d'abord : utile lors d'un changement de breakpoint (reconstruction)
+    wave.innerHTML = '';
+    if(refl) refl.innerHTML = '';
+    wave.style.gap = mobile ? '3px' : '4px';
+    wave.style.height = mobile ? '112px' : '134px';
+    if(refl){ refl.style.gap = mobile ? '3px' : '4px'; refl.style.height = mobile ? '50px' : '64px'; }
     for(var i=0;i<N;i++){
       var t = i/(N-1);
       var env = Math.pow(Math.sin(Math.PI*t), 0.8);
       var wob = 0.4 + 0.6*Math.abs(Math.sin(i*1.3) + 0.4*Math.cos(i*0.55));
-      var h = 9 + env*112*Math.min(1.15, wob);
-      h = Math.max(6, Math.min(124, h));
+      var h = 9 + env*(mobile ? 90 : 112)*Math.min(1.15, wob);
+      h = Math.max(6, Math.min(mobile ? 102 : 124, h));
       var dur = (0.85 + (i%6)*0.16).toFixed(2);
       var delay = (-(i%9)*0.11 - (i*0.015)).toFixed(2);
       var op = (0.5 + 0.5*env).toFixed(2);
@@ -584,6 +600,15 @@
         refl.appendChild(r);
       }
     }
+  }
+
+  /* Reconstruit la waveform quand on franchit le breakpoint mobile (640px) */
+  function setupWaveResponsive(){
+    if(!window.matchMedia) return;
+    var mq = window.matchMedia('(max-width:640px)');
+    var cb = function(){ buildWave(); };
+    if(mq.addEventListener){ mq.addEventListener('change', cb); }
+    else if(mq.addListener){ mq.addListener(cb); }
   }
 
   /* ---------- Modale « Tester l'IA en direct » ----------
@@ -773,6 +798,7 @@
     try { if('scrollRestoration' in history){ history.scrollRestoration = 'manual'; } } catch(e){}
     window.scrollTo(0, 0);
     buildWave();
+    setupWaveResponsive();
     setupModal();
     setupFaq();
     setupReveal();
